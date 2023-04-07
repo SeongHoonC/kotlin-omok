@@ -9,16 +9,18 @@ import model.domain.tools.Stone
 abstract class Turn(override val board: Board) : State {
     override fun place(location: Location): State {
         if (isForbidden(location)) return this
-        board.placeStone(location, stone)
-        if (isOmok(location)) return End(board, stone)
-        return nextTurn()
+        val nextBoard = Board(board.system)
+            .apply { placeStone(location, stone) }
+        if (isOmok(nextBoard, location)) return End(nextBoard, stone)
+        return nextTurn(nextBoard)
     }
 
-    private fun isOmok(location: Location): Boolean = OmokRule.isOmok(board, location, stone)
+    private fun isOmok(nextBoard: Board, location: Location): Boolean =
+        OmokRule.isOmok(nextBoard, location, stone)
 
-    private fun nextTurn() = when (stone) {
-        Stone.BLACK -> WhiteTurn(board)
-        Stone.WHITE -> BlackTurn(board)
+    private fun nextTurn(nextBoard: Board) = when (stone) {
+        Stone.BLACK -> WhiteTurn(nextBoard)
+        Stone.WHITE -> BlackTurn(nextBoard)
         else -> throw IllegalStateException()
     }
 

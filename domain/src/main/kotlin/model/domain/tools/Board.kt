@@ -1,6 +1,7 @@
 package model.domain.tools
 
-class Board private constructor(private val _system: MutableMap<Location, Stone>) {
+class Board(system: Map<Location, Stone>) {
+    private val _system: MutableMap<Location, Stone> = system.toMutableMap()
     val system
         get() = _system.toMap()
 
@@ -8,8 +9,9 @@ class Board private constructor(private val _system: MutableMap<Location, Stone>
 
     fun canPlace(location: Location) = getStone(location) == Stone.EMPTY
 
-    fun placeStone(location: Location, stone: Stone) {
+    fun placeStone(location: Location, stone: Stone): Board {
         _system[location] = stone
+        return Board(system)
     }
 
     companion object {

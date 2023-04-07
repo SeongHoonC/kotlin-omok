@@ -17,10 +17,11 @@ class OmokGameTest {
         val omokGame = OmokGame()
 
         // when
-        omokGame.playNextTurn(state, getTestDot(state.stone))
-        val actual = omokGame.playNextTurn(state, getTestDot(state.stone))
+        val before = omokGame.playNextTurn(state, getTestDot(state.stone))
+        val actual = omokGame.playNextTurn(before, getTestDot(before.stone))
+
         // then
-        assertThat(actual).isEqualTo(state)
+        assertThat(actual).isInstanceOf(before.javaClass)
     }
 
     @Test
@@ -32,10 +33,10 @@ class OmokGameTest {
         val omokGame = OmokGame()
 
         // when
-        omokGame.playNextTurn(state, getTestDot(state.stone))
-        val actual = omokGame.playNextTurn(state, getTestDot(state.stone))
+        val before = omokGame.playNextTurn(state, getTestDot(state.stone))
+        val actual = omokGame.playNextTurn(before, getTestDot(before.stone))
 
         // then
-        assertThat(actual).isNotEqualTo(state)
+        assertThat(actual).isNotInstanceOf(before.javaClass)
     }
 }
